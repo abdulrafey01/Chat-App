@@ -12,6 +12,7 @@ export default function Chat() {
   const [room, setRoom] = useState("");
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const [images, setImages] = useState([]);
 
   const location = useLocation();
   const ENDPOINT = "localhost:4000";
@@ -39,6 +40,13 @@ export default function Chat() {
     });
   }, [messages]);
 
+  useEffect(() => {
+    socket.on("imageMessage", (data) => {
+      console.log(data)
+      setMessages([...messages, data]);
+    });
+  }, [messages]);
+
   const sendMessage = (event) => {
     event.preventDefault();
     if (message) {
@@ -46,6 +54,9 @@ export default function Chat() {
     }
   };
   
+  const sendImage = (imageData) => {
+    socket.emit("sendImage", imageData );
+  };
   console.log(messages);
 
   return (
@@ -53,8 +64,7 @@ export default function Chat() {
       <div className="container">
         <InfoBar room={room} />
         <Messages messages={messages} name={name} />
-       <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
-       
+       <Input message={message} socket={socket} setMessage={setMessage} sendImage={sendImage} sendMessage={sendMessage} />
       </div>
     </div>
   );

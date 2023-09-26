@@ -1,37 +1,51 @@
-import React from 'react';
+import React from "react";
+import "./Message.css";
+import ReactEmoji from "react-emoji";
 
-import './Message.css';
-
-import ReactEmoji from 'react-emoji';
-
-const Message = ({ message: { text, user }, name }) => {
-  let isSentByCurrentUser = false;
-
+const Message = ({ message: { text, user, image }, name }) => {
   const trimmedName = name.trim().toLowerCase();
+  const isSentByCurrentUser = user === trimmedName;
 
-  if(user === trimmedName) {
-    isSentByCurrentUser = true;
-  }
+  const messageContainerClass = isSentByCurrentUser
+    ? "messageContainer justifyEnd"
+    : "messageContainer justifyStart";
+
+  const messageBoxClass = isSentByCurrentUser
+    ? "messageBox backgroundBlue"
+    : "messageBox backgroundLight";
 
   return (
-    isSentByCurrentUser
-      ? (
-        <div className="messageContainer justifyEnd">
-          <p className="sentText pr-10">{trimmedName}</p>
-          <div className="messageBox backgroundBlue">
-            <p className="messageText colorWhite">{ReactEmoji.emojify(text)}</p>
+    <div className={messageContainerClass}>
+      {!image ? (
+        <>
+          <p className={`sentText pr-10`}>
+            {isSentByCurrentUser ? trimmedName : user}
+          </p>
+          <div className={messageBoxClass}>
+            <p
+              className={`messageText ${
+                isSentByCurrentUser ? "colorWhite" : "colorDark"
+              }`}
+            >
+              {ReactEmoji.emojify(text)}
+            </p>
           </div>
-        </div>
-        )
-        : (
-          <div className="messageContainer justifyStart">
-            <div className="messageBox backgroundLight">
-              <p className="messageText colorDark">{ReactEmoji.emojify(text)}</p>
-            </div>
-            <p className="sentText pl-10 ">{user}</p>
-          </div>
-        )
+        </>
+      ) : (
+        <img
+          style={{
+            width: "100px",
+            height: "100px",
+            borderRadius: "50%", // Rounded corners
+            boxShadow: "0 0 5px rgba(0, 0, 0, 0.3)", // Box shadow
+          }}
+          src={image}
+          alt="Image"
+          className="messageImage"
+        />
+      )}
+    </div>
   );
-}
+};
 
 export default Message;

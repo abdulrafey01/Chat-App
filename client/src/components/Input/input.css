@@ -1,5 +1,6 @@
 .form {
     display: flex;
+    align-items: center;
     border-top: 2px solid #D3D3D3;
   }
   
@@ -9,6 +10,12 @@
     padding: 5%;
     width: 80%;
     font-size: 1.2em;
+  }
+
+  .fa-regular{
+    font-size: 25px;
+    margin: 0px 15px 0px 10px;
+    cursor: pointer;
   }
   
   input:focus, textarea:focus, select:focus{
@@ -24,4 +31,6 @@
     display: inline-block;
     border: none;
     width: 20%;
+    border-radius: 50px;
+    margin-right: 10px;
   }
